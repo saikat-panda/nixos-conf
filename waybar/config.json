@@ -1,0 +1,7 @@
+{
+  "layer": "bottom",
+  "position": "right",
+  "modules-left": ["network", "pulseaudio"],
+  "modules-center": ["clock"],
+  "modules-right": ["cpu", "memory", "battery"]
+}
