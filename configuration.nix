@@ -31,11 +31,19 @@
     '';
   };
 
+  #Enables bluetooth stuff
+  hardware.bluetooth.enable = true; # enables support for Bluetooth
+  services.blueman.enable = true;
+  #hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+  hardware.pulseaudio.enable = false;
+  
   #Fonts avaliable systemwide
   fonts.packages = 
   [
     pkgs.nerd-fonts.jetbrains-mono
   ]; 
+
+  
  
   # Setting up SDDM to act as login manager
   services.displayManager.sddm = {
@@ -123,6 +131,20 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+  #Cursor themeing
+  environment.variables = {
+    XCURSOR_THEME = "Bibata-Modern-Ice";
+    XCURSOR_SIZE = "20";
+  };
+  
+  services.xserver = {
+    enable = true;
+    displayManager.sessionCommands = ''
+      export XCURSOR_THEME=Bibata-Modern-Ice
+      export XCURSOR_SIZE=20
+    '';
+  };
+  
   environment.sessionVariables.NIXOS_OZONE_WL = "1";		#To use VS Code under Wayland, set the environment variable
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
@@ -135,7 +157,7 @@
     wget
     htop
     yazi
-    inputs.swww.packages.${pkgs.system}.swww		#Animated wallpaper solution
+    inputs.swww.packages.${pkgs.system}.swww			#Animated wallpaper solution
     waybar
     usbutils
     rofi-wayland
@@ -147,14 +169,13 @@
     neofetch
     #inputs.zen-browser.packages."${system}".default	#Zen browser
     jdk
-    #flameshot						#Has problems on wayland
-    grim						#Grabs images from a Wayland compositor
-    slurp						#Saves images to local storage
+    #flameshot											#Has problems on wayland
+    grim												#Grabs images from a Wayland compositor
+    slurp												#Saves images to local storage
     nwg-look
-    feh
     ffmpeg
     python3
-    python311Packages.pip
+    python312Packages.pip
     ollama
     git
     curl
@@ -193,6 +214,11 @@
     swayimg
     hyprlock
     (pkgs.libsForQt5.callPackage ./themes-SDDM/tokyo-night-sddm/default.nix { })
+    distrobox
+    podman
+    bibata-cursors
+    hyprcursor
+    #(pkgs.callPackage ./hyprcursor.nix { })
   ];
 
   services.xserver.videoDrivers = [ "nvidia" ];
